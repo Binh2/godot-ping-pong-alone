@@ -5,6 +5,7 @@ var angle_speed: float = 10
 var center: Vector2
 var prev_mouse_position: Vector2
 
+
 func get_angle() -> float:
 	if AutoPlay.is_auto_play:
 		return AutoPlay.auto_play_angle
@@ -20,6 +21,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	position = center
 	PlayerVariables.angle = get_angle()
+	#var old_rotation = rotation
 	var rotation_change = (PlayerVariables.angle - rotation) * angle_speed * delta
 	rotation += rotation_change
 	
@@ -33,5 +35,6 @@ func _process(delta: float) -> void:
 			elif prev_mouse_position.y > center.y && mouse_position.y <= center.y: # Mouse move from bottom left to top left
 				rotation -= 2 * PI
 				rotation -= rotation_change
-	
 		prev_mouse_position = mouse_position
+	
+	

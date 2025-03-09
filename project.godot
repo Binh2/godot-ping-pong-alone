@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 AutoPlay="*res://auto_play.gd"
 PlayerVariables="*res://player_variables.gd"
+BallVariables="*res://ball_variables.gd"
 
 [layer_names]
 

@@ -3,7 +3,6 @@ extends Node2D
 var center: Vector2
 var direction: Vector2
 
-@export var speed = 100
 var ball_radius = 8
 var circle_color = Color.BLACK
 var is_recently_touch = false
@@ -23,7 +22,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	position += direction * speed * delta
+	position += direction * BallVariables.speed * delta
 
 
 func get_unit_vector(angle: float):
@@ -45,7 +44,9 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 			var next_ball_position = predict_next_ball_position()
 			var v = next_ball_position - center
 			AutoPlay.auto_play_angle = v.angle() 
-			print(v)
+			
+			BallVariables.speed += 10
+			print(BallVariables.speed)
 			
 			is_recently_touch = true
 			$Timer.start(timeout_time)

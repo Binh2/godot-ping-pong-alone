@@ -13,12 +13,11 @@ position = Vector2(576, 320)
 [node name="Player" parent="." instance=ExtResource("1_ig7tw")]
 position = Vector2(576, 320)
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="OutOfBound" type="Area2D" parent="."]
 collision_layer = 4
 collision_mask = 2
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="OutOfBound"]
 polygon = PackedVector2Array(0, 0, 0, -128, -128, -128, -128, 768, 1280, 768, 1280, -128, 0, -128, 0, 0, 1152, 0, 1152, 648, 0, 648)
 
-[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
-[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="area_entered" from="OutOfBound" to="." method="_on_out_of_bound_area_entered"]
