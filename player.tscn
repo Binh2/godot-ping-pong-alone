@@ -5,7 +5,7 @@
 [sub_resource type="CanvasTexture" id="CanvasTexture_4flbx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sh265"]
-size = Vector2(5.70113, 66.5664)
+size = Vector2(17.1034, 77.6608)
 
 [node name="Player" type="Node2D"]
 script = ExtResource("1_4flbx")
@@ -19,6 +19,6 @@ texture = SubResource("CanvasTexture_4flbx")
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
-position = Vector2(180, 2.14577e-06)
+position = Vector2(188, 2.14577e-06)
 scale = Vector2(1.40323, 1.44217)
 shape = SubResource("RectangleShape2D_sh265")

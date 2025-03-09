@@ -4,14 +4,15 @@ var center: Vector2
 var direction: Vector2
 
 @export var speed = 100
-var circle_radius = 8
+var ball_radius = 8
 var circle_color = Color.BLACK
 var is_recently_touch = false
-var timeout_time = 0.1
+var timeout_time = 0.05
+var prev_ball_position
 
 
 func _draw() -> void:
-	draw_circle(Vector2.ZERO, circle_radius, circle_color)
+	draw_circle(Vector2.ZERO, ball_radius, circle_color)
 
 
 func _ready() -> void:
@@ -29,13 +30,23 @@ func get_unit_vector(angle: float):
 	return Vector2(cos(angle), sin(angle))
 
 
+func predict_next_ball_position() -> Vector2:
+	var direction_with_magnitude = direction.dot(center - prev_ball_position) * direction * 2 # vector point from prev_ball_position to next_ball_position
+	return prev_ball_position + direction_with_magnitude
+
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
 		if !is_recently_touch:
 			var normal_vector = get_unit_vector(PlayerVariables.angle)
 			direction = direction - 2 * direction.dot(normal_vector) * normal_vector
-			print("Collide")
-			AutoPlay.auto_play_angle = direction.angle()
+			print("Collided")
+			
+			prev_ball_position = position
+			var next_ball_position = predict_next_ball_position()
+			var v = next_ball_position - center
+			AutoPlay.auto_play_angle = v.angle() 
+			print(v)
+			
 			is_recently_touch = true
 			$Timer.start(timeout_time)
 
