@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+Global="*res://global.gd"
 AutoPlay="*res://auto_play.gd"
 PlayerVariables="*res://player_variables.gd"
 BallVariables="*res://ball_variables.gd"

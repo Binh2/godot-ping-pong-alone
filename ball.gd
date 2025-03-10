@@ -1,6 +1,6 @@
 extends Node2D
 
-var center: Vector2
+
 var direction: Vector2
 
 var ball_radius = 8
@@ -8,6 +8,8 @@ var circle_color = Color.BLACK
 var is_recently_touch = false
 var timeout_time = 0.05
 var prev_ball_position
+var acceleration = 10
+var speed = 100
 
 
 func _draw() -> void:
@@ -15,23 +17,21 @@ func _draw() -> void:
 
 
 func _ready() -> void:
-	center = get_viewport_rect().size / 2
-	position = center
+	position = Global.center
 	direction = Vector2.LEFT.rotated(randf_range(-PI, PI))
-	AutoPlay.auto_play_angle = direction.angle()
+	
+	BallVariables.direction = direction
+	AutoPlay.init_auto_play()
 
 
 func _process(delta: float) -> void:
-	position += direction * BallVariables.speed * delta
+	if speed < BallVariables.max_speed:
+		speed += acceleration
+	elif speed > BallVariables.max_speed:
+		speed = BallVariables.max_speed
+	print(speed)
+	position += direction * speed * delta
 
-
-func get_unit_vector(angle: float):
-	return Vector2(cos(angle), sin(angle))
-
-
-func predict_next_ball_position() -> Vector2:
-	var direction_with_magnitude = direction.dot(center - prev_ball_position) * direction * 2 # vector point from prev_ball_position to next_ball_position
-	return prev_ball_position + direction_with_magnitude
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
@@ -40,13 +40,13 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 			direction = direction - 2 * direction.dot(normal_vector) * normal_vector
 			print("Collided")
 			
-			prev_ball_position = position
-			var next_ball_position = predict_next_ball_position()
-			var v = next_ball_position - center
-			AutoPlay.auto_play_angle = v.angle() 
+			BallVariables.direction = direction
+			BallVariables.prev_ball_position = position
+			AutoPlay.update_auto_play()
 			
-			BallVariables.speed += 10
-			print(BallVariables.speed)
+			BallVariables.max_speed += 10
+			print(BallVariables.max_speed)
+			speed = BallVariables.min_speed
 			
 			is_recently_touch = true
 			$Timer.start(timeout_time)
@@ -54,3 +54,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 
 func _on_timer_timeout() -> void:
 	is_recently_touch = false
+
+
+func get_unit_vector(angle: float):
+	return Vector2(cos(angle), sin(angle))

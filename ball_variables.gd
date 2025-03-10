@@ -1,11 +1,20 @@
 extends Node
 
-signal speed_changed(value)
-var default_speed = 100
-@export var speed = default_speed:
-	set(value):
-		speed = value
-		speed_changed.emit(value)
+signal max_speed_changed(value)
 
+# For auto play
+var prev_ball_position: Vector2
+var direction: Vector2
+
+
+# For ball and saving high score
+var min_speed = 50
+var default_max_speed = 100
+@export var max_speed = default_max_speed:
+	set(value):
+		max_speed = value
+		max_speed_changed.emit(value)
+
+# For gameover
 func reset_speed():
-	speed = default_speed
+	max_speed = default_max_speed
